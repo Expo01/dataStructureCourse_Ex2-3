@@ -71,13 +71,13 @@ public class MyLinkedList {
         length++;
     }
 
-    public Node removeLast(){
+    public Node removeLast() {
         if (length == 0) return null; //if list has no items, returns null
 
         //if list has length, both temporary variables 'pre' and 'temp' set to value of the 'head' pointer
         Node temp = head;
         Node pre = head;
-        while(temp.next != null) { //while there is a next item in the list, the while loop continues
+        while (temp.next != null) { //while there is a next item in the list, the while loop continues
             pre = temp; // pre is set to temp
             temp = temp.next; // temp set to next
             // so now, after the first node where both pre and temp are assigned to head, temp will always be one in
@@ -101,6 +101,54 @@ public class MyLinkedList {
         return temp; // still set to value of null from while loop
 
     }
+
+    public void prepend(int value) {
+        Node newNode = new Node(value);
+        if (length == 0) {
+            head = newNode; //head Node and tail Node both = newNode
+            tail = newNode;
+        } else {
+            newNode.next = head; //next 'Node' type field points to head
+            head = newNode; //head node = newNode
+        }
+        length++;
+    }
+
+    public Node removeFirst(){
+        if (length == 0) return null;
+        Node temp = head; // temp and head point to same Node in memory
+        head = head.next; // head points to 2nd node
+        temp.next = null; // breaks off first node which temp is pointing to
+        length--;
+        if (length ==0){
+            tail = null;
+        }
+        return temp; //returns removed node
+    }
+
+    public Node get(int index){
+        if (index < 0 || index >= length){
+            return null;
+        }
+        Node temp = head; // temp = head to achieve value without modifying head
+        for (int i = 0; i < index; i++){
+            temp = temp.next; //traverse the loop and reassign temp.
+            //stops the loop before the index since temep = the next item so we get value that
+            // the preceding Node points to
+        }
+        return temp; //return the Node at deesired index
+    }
+
+    public boolean set(int index, int value){
+        Node temp = get(index); //get method utilized where if a node exists at the index, it returns it. otherwise null
+        if (temp != null){
+            temp.value = value; //reassigns value field of returned Node and returns boolean
+            return true;
+        }
+        return false;
+    }
+
+
 }
 
 
