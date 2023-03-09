@@ -148,6 +148,42 @@ public class MyLinkedList {
         return false;
     }
 
+    public boolean insert(int index, int value)  {
+        if (index < 0 || index > length) return false; //realize that length is greater than the last
+        // index but we are possibly adding at index of length valuee so just > is exclusionary, not >=
+        if (index == 0) {
+            prepend(value); //reuse prepend method
+            return true; //cannot directly return the prepend() method since it returns void which is
+            // not in accordance with mandated return of boolean for the insert() method
+        }
+        if (index == length) {
+            append(value);
+            return true;
+        }
+        Node newNode = new Node(value);
+        Node temp = get(index - 1); //pointer created 'temp' and get method used with is O(n) to get the
+        //node before desired index since we need something to point forward
+        newNode.next = temp.next; //new node placed after temp
+        temp.next = newNode; //preceding node reassigned to point to newNode
+        length++;
+        return true;
+    }
+
+    public Node remove(int index) {
+        if (index < 0 || index >= length) return null;
+        if (index == 0) return removeFirst(); //can include removeFirst() in return line since it returns
+        // a Node which is in agreeance with the remove() method which requires a Node be returned
+        if (index == length - 1) return removeLast(); //reuse
+
+        Node prev = get(index - 1); //using geet method is O(n)
+        Node temp = prev.next; //don't want to use the get method here for the next index since
+        // this way we can have it be O(1) instead of O(n)
+
+        prev.next = temp.next;
+        temp.next = null; //breaks off the temp pointer/Node
+        length--;
+        return temp;
+    }
 
 }
 
