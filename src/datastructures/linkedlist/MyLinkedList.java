@@ -100,7 +100,7 @@ public class MyLinkedList {
         }
         return temp; // still set to value of null from while loop
 
-    }
+    } // O(n) since starts at beginning and uses while loop to get to end
 
     public void prepend(int value) {
         Node newNode = new Node(value);
@@ -124,7 +124,7 @@ public class MyLinkedList {
             tail = null;
         }
         return temp; //returns removed node
-    }
+    } // O(1). better than arrayList in this case where ArrayList relies on indexes
 
     public Node get(int index){
         if (index < 0 || index >= length){
@@ -137,7 +137,7 @@ public class MyLinkedList {
             // the preceding Node points to
         }
         return temp; //return the Node at deesired index
-    }
+    } // O(n), requires for loop iteration
 
     public boolean set(int index, int value){
         Node temp = get(index); //get method utilized where if a node exists at the index, it returns it. otherwise null
@@ -185,6 +185,21 @@ public class MyLinkedList {
         return temp;
     }
 
+    public void reverse() {
+        Node temp = head; //temp and head point to first node
+        head = tail; // head and tail both point to last node
+        tail = temp; // tail points to first node. head and tail effectively swapped and temp still points first node
+        Node after; // variable created but does not yet point to anything
+        Node before = null;
+        for (int i = 0; i < length; i++) { //using a 3 node list as an example....
+            after = temp.next; // now 'after' points to node 2
+            temp.next = before; // temp pointer now points to null instead of right to 'after'
+            before = temp; //before and temp both point to node 1
+            temp = after; //temp and after both point to node 2
+            //end of first loop, before on node 1, temp and after on node 2, nothing on node 3
+            //after second loop, after and temp both point 'right' to null and before points to node 3 along with 'tail'
+        }
+    }
 }
 
 
