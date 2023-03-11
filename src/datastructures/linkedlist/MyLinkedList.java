@@ -124,7 +124,7 @@ public class MyLinkedList {
             tail = null;
         }
         return temp; //returns removed node
-    } // O(1). better than arrayList in this case where ArrayList relies on indexes
+    } // O(1). better than arrayList in this case where ArrayList relies on indexes.
 
     public Node get(int index){
         if (index < 0 || index >= length){
