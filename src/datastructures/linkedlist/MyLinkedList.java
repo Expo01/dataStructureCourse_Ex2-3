@@ -26,12 +26,12 @@ public class MyLinkedList {
     }
 
     public void printList() {
-        Node temp = head;
-        while (temp != null) {
+        Node temp = head; //temp and head both point to first Node
+        while (temp != null) { // while temp points to something, while loop continues
             System.out.println(temp.value);
-            temp = temp.next;
+            temp = temp.next; //temp assigned to next Node/null
         }
-    }
+    } // uses while loop. O(n)
 
     public void getHead() {
         if (head == null) {
@@ -39,7 +39,7 @@ public class MyLinkedList {
         } else {
             System.out.println("Head: " + head.value);
         }
-    }
+    } // O(1)
 
     public void getTail() {
         if (head == null) {
@@ -47,18 +47,20 @@ public class MyLinkedList {
         } else {
             System.out.println("Tail: " + tail.value);
         }
-    }
+    } // O(1)
 
     public void getLength() {
         System.out.println("Length: " + length);
-    }
+    } // O(1)
 
     public void makeEmpty() {
         head = null;
         tail = null;
         length = 0;
-    }
-
+        //note here that the Nodes are again not deleted. we could have 100 nodes that point from one to the next,
+        // but without the head pointer to the first Node, there is no way to access the list and length is set to '0'
+        // so the list of Linked Nodes I assume just gets picked up by the garbage collector at some point
+    } // O(1)
 
     public void append(int value) {
         Node newNode = new Node(value);
@@ -69,7 +71,7 @@ public class MyLinkedList {
         }
         tail = newNode;
         length++;
-    }
+    } // O(1)
 
     public Node removeLast() {
         if (length == 0) return null; //if list has no items, returns null
@@ -105,14 +107,14 @@ public class MyLinkedList {
     public void prepend(int value) {
         Node newNode = new Node(value);
         if (length == 0) {
-            head = newNode; //head Node and tail Node both = newNode
+            head = newNode; //head Node and tail Node fields of LinkedList both = newNode
             tail = newNode;
         } else {
             newNode.next = head; //next 'Node' type field points to head
             head = newNode; //head node = newNode
         }
         length++;
-    }
+    } // O(1)
 
     public Node removeFirst(){
         if (length == 0) return null;
@@ -146,44 +148,49 @@ public class MyLinkedList {
             return true;
         }
         return false;
-    }
+    } // utilizes get() which is O(n) so this is too
 
     public boolean insert(int index, int value)  {
         if (index < 0 || index > length) return false; //realize that length is greater than the last
         // index but we are possibly adding at index of length valuee so just > is exclusionary, not >=
         if (index == 0) {
-            prepend(value); //reuse prepend method
+            prepend(value); //reuse prepend method which is O(1)
             return true; //cannot directly return the prepend() method since it returns void which is
             // not in accordance with mandated return of boolean for the insert() method
         }
         if (index == length) {
-            append(value);
+            append(value); // reuses append which is O(1)
             return true;
         }
         Node newNode = new Node(value);
         Node temp = get(index - 1); //pointer created 'temp' and get method used with is O(n) to get the
         //node before desired index since we need something to point forward
-        newNode.next = temp.next; //new node placed after temp
-        temp.next = newNode; //preceding node reassigned to point to newNode
+        newNode.next = temp.next; //new node placed after temp but temp does not yet point to newNode. effectivley
+        // newNode.next is set to null
+        temp.next = newNode; //preceding node reassigned from null to point to newNode
         length++;
         return true;
-    }
+    } //re-uses append and prepend methods which are O(1) but also
+    // uses get() for inserting at index that is not first or last. this is O(n) so we drop non dominants: O(1) and the
+    //insert method is just O(n)
 
     public Node remove(int index) {
-        if (index < 0 || index >= length) return null;
+        if (index < 0 || index >= length) return null; // >= since we can't remove an index of 'length' value
         if (index == 0) return removeFirst(); //can include removeFirst() in return line since it returns
         // a Node which is in agreeance with the remove() method which requires a Node be returned
-        if (index == length - 1) return removeLast(); //reuse
+        // removeFirst is O(1)
+        if (index == length - 1) return removeLast(); //reuse removeLast which is O(n)
 
-        Node prev = get(index - 1); //using geet method is O(n)
+        Node prev = get(index - 1); //using get method is O(n)
         Node temp = prev.next; //don't want to use the get method here for the next index since
         // this way we can have it be O(1) instead of O(n)
 
-        prev.next = temp.next;
+        prev.next = temp.next; // prev.next = null
         temp.next = null; //breaks off the temp pointer/Node
         length--;
         return temp;
-    }
+    } //re-uses removeFirst() which is O(1), and reuses removeLast() and get()
+    // both of which are O(n). Non-dominant Big O is dropped so remove() is O(n)
 
     public void reverse() {
         Node temp = head; //temp and head point to first node
@@ -193,13 +200,13 @@ public class MyLinkedList {
         Node before = null;
         for (int i = 0; i < length; i++) { //using a 3 node list as an example....
             after = temp.next; // now 'after' points to node 2
-            temp.next = before; // temp pointer now points to null instead of right to 'after'
+            temp.next = before; // temp pointer now points 'left' to null instead of right to 'after'
             before = temp; //before and temp both point to node 1
             temp = after; //temp and after both point to node 2
             //end of first loop, before on node 1, temp and after on node 2, nothing on node 3
             //after second loop, after and temp both point 'right' to null and before points to node 3 along with 'tail'
         }
-    }
+    } // uses for loop. O(n)
 }
 
 
